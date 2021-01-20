@@ -3,7 +3,8 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import productOne from "../images/product1.gif";
 import productTwo from "../images/product2.gif";
 import ReactJson from "react-json-view";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import cartActions from "../redux/actions/cart.actions";
 
 const RootComponent = (props) => {
   return (
@@ -52,7 +53,8 @@ const ProductPage = (props) => {
 const CartPage = (props) => {
   // Step 6
   // Replace the line below to get data of the second product from state.cart.totalPrice
-  const totalPrice = "...";
+  // const totalPrice = "...";
+  const totalPrice = useSelector(state => state.cart.totalPrice)
 
   return (
     <div className="box text-center">
@@ -85,7 +87,8 @@ const ProductOne = (props) => {
   // Step 4
   // Replace the line below to get data of the first product from state.product
   // You should see the price is updated
-  const product = { title: "...", price: "...", qty: "..." };
+  // const product = { title: "...", price: "...", qty: "..." };
+  const product = useSelector(state => state.product[0])
 
   // Step 7
   // Define: const dispatch = useDispatch();
@@ -94,12 +97,16 @@ const ProductOne = (props) => {
   // Make the function handle onClick event of the button
   // eslint-disable-next-line
   const dispatch = useDispatch();
-
+  const handleAddProduct = ()=>{
+    dispatch(cartActions.addProduct(product));
+  }
   // Step 8
   // Create a function to handle click event of the button Remove
   // In the function, dispatch cartActions.removeProduct(product) to trigger the action remove product from the cart
   // Make the function handle onClick event of the button
-
+  const handleRemoveProduct = ()=>{
+    dispatch(cartActions.removeProduct(product));
+  }
   return (
     <div className="box text-center">
       <h4 className="box-title p-2">
@@ -116,12 +123,14 @@ const ProductOne = (props) => {
         </Row>
         <Row>
           <Col>
-            <Button variant="success" size="sm" style={{ width: "5rem" }}>
+            <Button variant="success" size="sm" style={{ width: "5rem" }}
+            onClick={handleAddProduct}>
               Add
             </Button>
           </Col>
           <Col>
-            <Button variant="danger" size="sm" style={{ width: "5rem" }}>
+            <Button variant="danger" size="sm" style={{ width: "5rem" }}
+             onClick={handleRemoveProduct}>
               Remove
             </Button>
           </Col>
@@ -135,11 +144,18 @@ const ProductTwo = (props) => {
   // Step 5
   // Replace the line below to get data of the second product from state.product
   // You should see the price is updated
-  const product = { title: "...", price: "...", qty: "..." };
+  // // const product = { title: "...", price: "...", qty: "..." };
+  const product = useSelector(state => state.product[1])
 
   // Step 9
   // Repeat step 7 and 8 for this component
-
+  const dispatch = useDispatch();
+  const handleAddProduct = ()=>{
+    dispatch(cartActions.addProduct(product));
+  }
+  const handleRemoveProduct = ()=>{
+    dispatch(cartActions.removeProduct(product));
+  }
   return (
     <div className="box text-center">
       <h4 className="box-title p-2">
@@ -156,12 +172,14 @@ const ProductTwo = (props) => {
         </Row>
         <Row>
           <Col>
-            <Button variant="success" size="sm" style={{ width: "5rem" }}>
+            <Button variant="success" size="sm" style={{ width: "5rem" }}
+            onClick={handleAddProduct}>
               Add
             </Button>
           </Col>
           <Col>
-            <Button variant="danger" size="sm" style={{ width: "5rem" }}>
+            <Button variant="danger" size="sm" style={{ width: "5rem" }}
+            onClick={handleRemoveProduct}>
               Remove
             </Button>
           </Col>
@@ -175,7 +193,8 @@ const CartProductOne = (props) => {
   // Step 2
   // Replace the line below to get data of the first product from state.cart.products
   // Change the price of products in `cart.reducer.js` to see the effect
-  const product = { price: "...", qty: "..." };
+  // const product = { price: "...", qty: "..." };
+  const product = useSelector(state => state.cart.products[0])
 
   return (
     <div className="box text-center">
@@ -196,7 +215,8 @@ const CartProductTwo = (props) => {
   // Step 3
   // Replace the line below to get data of the second product from state.cart.products
   // Change the price of products in `cart.reducer.js` to see the effect
-  const product = { price: "...", qty: "..." };
+  // const product = { price: "...", qty: "..." };
+  const product = useSelector(state => state.cart.products[1])
 
   return (
     <div className="box text-center">
@@ -217,6 +237,8 @@ const Store = (props) => {
   // Step 1
   // use useSelector() to get the data of products and cart in the store
   // pass {products, cart} to the src attribut of the component <ReactJson/>
+  const products = useSelector((state) => state.product);
+  const cart = useSelector((state) => state.cart);
 
   return (
     <div className="box text-center">
@@ -224,7 +246,7 @@ const Store = (props) => {
       <p className="text-left">
         <ReactJson
           name="store"
-          src={{}}
+          src={{products, cart}}
           theme="monokai"
           displayDataTypes={false}
           displayObjectSize={false}

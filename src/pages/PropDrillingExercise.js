@@ -34,6 +34,33 @@ const RootComponent = (props) => {
   // Step 3
   // Pass the functions to the product components to handle the click event of the Add/Remove buttons
 
+  const handleAddToCard = (product)=>{
+      const cartProductsCopy = [...cart.products]
+      for(let p of cartProductsCopy){
+        if(p.id === product.id){
+          p.price += product.price;
+          p.qty = p.qty + 1;
+        }
+      }
+      setCart({
+        products: cartProductsCopy,
+        totalPrice: cartProductsCopy.reduce((sum, product) => sum + product.price,0)
+      })
+  }
+  const handleRemoveFromCard =(product) =>{
+    const cartProductsCopy = [...cart.products]
+    for(let p of cartProductsCopy){
+      if(p.id === product.id && p.qty > 0){
+        p.qty -=1;
+        p.price -= product.price
+      }
+    }
+     setCart({
+        products: cartProductsCopy,
+        totalPrice: cartProductsCopy.reduce((sum, product) => sum + product.price,0)
+      })
+  }
+
   return (
     <div className="box text-center">
       <h4 className="box-title p-2">
@@ -54,7 +81,10 @@ const RootComponent = (props) => {
       <Container fluid>
         <Row>
           <Col>
-            <ProductPage products={products} />
+            <ProductPage 
+              products={products} 
+              handleAddToCart={handleAddToCard}
+              handleRemoveProduct={handleRemoveFromCard}/>
           </Col>
           <Col>
             <CartPage cart={cart} />
@@ -76,10 +106,16 @@ const ProductPage = (props) => {
       <Container fluid>
         <Row>
           <Col>
-            <ProductOne product={props.products[0]} />
+            <ProductOne 
+            product={props.products[0]} 
+            handleAddProduct={props.handleAddToCart}
+            handleRemoveProduct={props.handleRemoveProduct}/>
           </Col>
           <Col>
-            <ProductTwo product={props.products[1]} />
+            <ProductTwo 
+            product={props.products[1]} 
+            handleAddProduct={props.handleAddToCart}
+            handleRemoveProduct={props.handleRemoveProduct}/>
           </Col>
         </Row>
       </Container>
@@ -132,12 +168,14 @@ const ProductOne = (props) => {
         </Row>
         <Row>
           <Col>
-            <Button variant="success" size="sm" style={{ width: "5rem" }}>
+            <Button variant="success" size="sm" style={{ width: "5rem" }} 
+            onClick={()=>props.handleAddProduct(props.product)}>
               Add
             </Button>
           </Col>
           <Col>
-            <Button variant="danger" size="sm" style={{ width: "5rem" }}>
+            <Button variant="danger" size="sm" style={{ width: "5rem" }}
+            onClick={()=>props.handleRemoveProduct(props.product)}>
               Remove
             </Button>
           </Col>
@@ -164,12 +202,14 @@ const ProductTwo = (props) => {
         </Row>
         <Row>
           <Col>
-            <Button variant="success" size="sm" style={{ width: "5rem" }}>
+            <Button variant="success" size="sm" style={{ width: "5rem" }}
+            onClick={()=>props.handleAddProduct(props.product)}>
               Add
             </Button>
           </Col>
           <Col>
-            <Button variant="danger" size="sm" style={{ width: "5rem" }}>
+            <Button variant="danger" size="sm" style={{ width: "5rem" }}
+            onClick={()=>props.handleRemoveProduct(props.product)}>
               Remove
             </Button>
           </Col>
