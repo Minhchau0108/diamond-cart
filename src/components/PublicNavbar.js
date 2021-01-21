@@ -23,6 +23,9 @@ const PublicNavbar = () => {
         <Nav.Link as={NavLink} exact={true} to="/redux-final">
           Redux Final
         </Nav.Link>
+        <Nav.Link as={NavLink} exact={true} to="/redux-rocket">
+          Redux Rocket
+        </Nav.Link>
       </Nav>
       <Nav>
         <a href="#your_github_repo_link" target="_blank">

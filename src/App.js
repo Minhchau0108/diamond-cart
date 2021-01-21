@@ -9,6 +9,7 @@ import AlertMsg from "./components/AlertMsg";
 import ReduxExercise from "./pages/ReduxExercise";
 import PropDrillingFinal from "./pages/PropDrillingFinal";
 import ReduxFinal from "./pages/ReduxFinal";
+import ReduxRocket from './pages/ReduxRocket'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/prop-final" component={PropDrillingFinal} />
         <Route exact path="/redux-exercise" component={ReduxExercise} />
         <Route exact path="/redux-final" component={ReduxFinal} />
+        <Route exact path="/redux-rocket" component={ReduxRocket} />
         <Route component={NotFoundPage} />
       </Switch>
     </Router>
